@@ -1,0 +1,31 @@
+[package]
+name = "qiniu"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+rustls = "0.23.5"
+tokio-rustls = "0.26.0"
+qiniu-sdk = { version = "0.2.4", features = [
+    "utils",
+    "etag",
+    "credential",
+    "upload-token",
+    "http",
+    "http-client",
+    "apis",
+    "objects",
+    "upload",
+    "async",
+    "reqwest",
+    "isahc",
+    "ureq",
+    "c_ares",
+    "trust_dns",
+    "dns-over-tls",
+    "dns-over-https",
+    "trust_dns",
+    "c_ares",
+] }
