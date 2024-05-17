@@ -1,3 +1,13 @@
 /rust/*/target/*
 /rust/*/.idea/*
 /rust/*/.idea
+/c/target/*
+/c/target
+/c/build
+/c/build/*
+/c/debug/*
+/c/debug
+/c/cmake-build-debug/*
+/c/cmake-build-debug
+/c/output
+/c/output/*
