@@ -1,0 +1,3 @@
+//the configuraton options and settings for c-primary-plus-demo
+#include MARJOR_VERSION @MAJOR_VERSION@
+#include SOJAR_VERSION @SOJAR_VERSION@

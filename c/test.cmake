@@ -1,0 +1,46 @@
+set(var "hello")
+
+macro(Joke arg)
+  message("m arg = ${arg}")
+  set(arg "andy")
+  message("m after change the arg!")
+  message("m arg = ${arg}")
+endmacro()
+
+message("call macro")
+Joke(${var})
+
+function(Many arg)
+  message("f arg = ${arg}")
+  set(arg "monkey")
+  message("f after change the arg")
+  message("f arg = ${arg}")
+endfunction()
+message("call the function")
+Many("${var}")
+
+
+set(var "ABC")
+
+macro(Moo arg)
+  if (arg STREQUAL "ABC")
+    message("arg1 = ${arg}")
+  endif()
+  if (${arg} STREQUAL "ABC")
+    message("arg2 = ${arg}")
+  endif()
+endmacro()
+message("=== Call macro ===")
+Moo(${var})
+
+function(Foo arg)
+  if (arg STREQUAL "ABC")
+    message("arg1 = ${arg}")
+  endif()
+  if (${arg} STREQUAL "ABC")
+    message("arg2 = ${arg}")
+  endif()
+endfunction()
+message("=== Call function ===")
+Foo(${var})
+

@@ -1,0 +1,1 @@
+double selfSqrt(double x);
