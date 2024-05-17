@@ -1,0 +1,18 @@
+# For more info on HTTP files go to https://aka.ms/vs/httpfile
+@host=localhost
+@port=7004
+GET https://{{host}}:{{port}}/api/TodoItems
+
+###
+GET https://www.baidu.com
+Cache-Control: max-age=604800
+
+
+###
+POST https://{{host}}:{{port}}/api/TodoItems
+Content-Type: application/json
+
+{
+    "name": "mokey",
+    "isComplete": false
+}
