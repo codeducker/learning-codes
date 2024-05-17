@@ -1,0 +1,2 @@
+JAVA_VERSION="17.0.8"
+MODULES="java.base hello.jigsaw java.datatransfer java.xml java.prefs java.desktop"

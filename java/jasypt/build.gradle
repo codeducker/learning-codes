@@ -1,0 +1,39 @@
+plugins {
+	id 'org.springframework.boot' version '2.4.6'
+	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+	id 'java'
+}
+
+group = 'com.loern.jasypt'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '1.8'
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter'
+	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'mysql:mysql-connector-java:8.0.29'
+	implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:2.2.2'
+	implementation 'tk.mybatis:mapper-spring-boot-starter:2.1.5'
+	implementation 'com.github.pagehelper:pagehelper-spring-boot-starter:1.4.2'
+	implementation 'org.apache.commons:commons-lang3:3.12.0'
+	implementation 'org.apache.commons:commons-lang3:3.12.0'
+	implementation 'org.springframework.boot:spring-boot-starter-mail:2.7.5'
+	implementation 'org.redisson:redisson:3.16.8'
+	compileOnly  'org.projectlombok:lombok:1.18.24'
+	annotationProcessor 'org.projectlombok:lombok:1.18.24'
+	implementation 'org.apache.commons:commons-collections4:4.4'
+	implementation 'cn.hutool:hutool-all:5.8.1'
+	implementation 'com.alibaba:fastjson:2.0.7.graal'
+	implementation 'com.baomidou:mybatis-plus-boot-starter:3.5.1'
+	implementation 'com.github.ulisesbocchio:jasypt-spring-boot-starter:3.0.4'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}

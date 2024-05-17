@@ -1,0 +1,19 @@
+plugins {
+	id 'java'
+}
+
+group = 'com.loern'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '8'
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	testImplementation "junit:junit:4.13.2"
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}
