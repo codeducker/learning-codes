@@ -1,0 +1,82 @@
+
+import org.gradle.api.tasks.SourceTask
+import org.gradle.workers.WorkerExecutor
+import org.gradle.api.file.DirectoryProperty
+import org.gradle.api.tasks.OutputDirectory
+import org.gradle.workers.WorkQueue
+import org.gradle.workers.WorkAction
+import javax.inject.Inject
+import org.gradle.api.tasks.TaskAction
+
+
+abstract class ReverseFiles extends SourceTask {
+    private final WorkerExecutor workerExecutor
+
+    @OutputDirectory
+    abstract DirectoryProperty getOutputDir()
+
+    // The WorkerExecutor will be injected by Gradle at runtime
+    @Inject
+    ReverseFiles(WorkerExecutor workerExecutor) {
+        this.workerExecutor = workerExecutor
+    }
+
+    @TaskAction
+    void reverseFiles() {
+        // Create a WorkQueue to submit work items
+        WorkQueue workQueue = workerExecutor.noIsolation()
+
+        // Create and submit a unit of work for each file
+        source.each { file ->
+            workQueue.submit(ReverseFile.class) { ReverseParameters parameters ->
+                parameters.fileToReverse = file
+                parameters.destinationDir = outputDir
+            }
+        }
+        // Wait for all asynchronous work submitted to this queue to complete before continuing
+        workQueue.await()
+        //这里需要注意的是 此时多项目 无法直接使用 projectLayout 而是 通过当前project来获取
+        def rp = project.getLayout().projectDirectory.asFile.relativePath(outputDir.get().asFile)
+        logger.lifecycle("Created ${outputDir.get().asFile.listFiles().length} \
+        reversed files in ${rp}")
+    }
+}
+
+import org.gradle.workers.WorkParameters
+import org.gradle.api.file.RegularFileProperty
+import org.gradle.api.file.DirectoryProperty
+
+
+interface ReverseParameters extends WorkParameters {
+    RegularFileProperty getFileToReverse();
+    DirectoryProperty getDestinationDir();
+}
+
+
+import org.gradle.workers.WorkAction
+import org.gradle.api.file.FileSystemOperations
+import javax.inject.Inject
+
+
+public abstract class ReverseFile implements WorkAction<ReverseParameters> {
+    private final FileSystemOperations fileSystemOperations
+
+    @Inject
+    public ReverseFile(FileSystemOperations fileSystemOperations) {
+        this.fileSystemOperations = fileSystemOperations
+    }
+
+    @Override
+    void execute() {
+        fileSystemOperations.copy {
+            from parameters.fileToReverse
+            into parameters.destinationDir
+            filter { String line -> line.reverse() }
+        }
+    }
+}
+
+tasks.register("reverseFiles",ReverseFiles) {
+    outputDir = layout.buildDirectory.dir("reversed")
+    source("sources")
+}

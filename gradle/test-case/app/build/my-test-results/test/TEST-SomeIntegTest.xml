@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="SomeIntegTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2024-03-06T11:04:24" hostname="loerndeMacBook-Pro.local" time="0.025">
+  <properties/>
+  <testcase name="sayNo()" classname="SomeIntegTest" time="0.02"/>
+  <testcase name="likeUiCheck()" classname="SomeIntegTest" time="0.002"/>
+  <system-out><![CDATA[File Watching Change
+Test UiCheck println
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

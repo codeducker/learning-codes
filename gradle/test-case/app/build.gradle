@@ -1,0 +1,83 @@
+plugins {
+    id "java"
+    alias(libs.plugins.versions)
+}
+
+repositories {
+    mavenCentral()
+}
+
+def versionCatalog = extensions.getByType(VersionCatalogsExtension).named("libs")
+println "Library aliases: ${versionCatalog.libraryAliases}"
+
+dependencies {
+    implementation libs.groovy.core
+    implementation libs.bundles.groovy
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.1'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.6.1'
+//  bundle('groovy', ['groovy-core', 'groovy-json', 'groovy-nio'])//等价于 libs.versions.toml中的bundle定义
+
+    //通过platform管理版本
+//    api platform(project(':platform'))
+//    api 'commons-httpclient:common-httpclient'
+
+    // 导入maven bom文件
+    implementation platform('org.springframework.boot:spring-boot-dependencies:1.5.8.RELEASE')
+    // import a BOM. The versions used in this file will override any other version found in the graph
+//    implementation enforcedPlatform('org.springframework.boot:spring-boot-dependencies:1.5.8.RELEASE')
+    // define dependencies without versions
+    implementation 'com.google.code.gson:gson'
+    implementation 'dom4j:dom4j'
+}
+
+tasks.register('mock', Test) {
+    println getClasspath()
+    println getTestClassesDirs()
+}
+
+test {
+    useJUnitPlatform()
+
+    filter {
+        includeTestsMatching "*UiCheck"
+
+        //include all tests from package
+//        includeTestsMatching "org.gradle.internal.*"
+
+        //include all integration tests
+        includeTestsMatching "*IntegTest"
+    }
+
+    //调试参数
+    debugOptions {
+        enabled = true
+        host = 'localhost'
+        port = 4455
+        server = true
+        suspend = true
+    }
+}
+
+
+reporting.baseDir = "my-reports"
+java.testResultsDir = layout.buildDirectory.dir("my-test-results")
+
+tasks.register('showDirs') {
+    def rootDir = project.rootDir
+    def reportsDir = project.reporting.baseDirectory
+    def testResultsDir = project.java.testResultsDir
+
+    doLast {
+        logger.quiet(rootDir.toPath().relativize(reportsDir.get().asFile.toPath()).toString())
+        logger.quiet(rootDir.toPath().relativize(testResultsDir.get().asFile.toPath()).toString())
+    }
+}
+//
+//checkstyle {
+//    // will use the version declared in the catalog
+//    toolVersion = libs.versions.checkstyle.get()
+//}
+//
+//scala {
+//    zincVersion = libs.versions.zinc.asProvider().get()
+//}

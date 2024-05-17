@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="SomeTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2024-03-06T11:04:24" hostname="loerndeMacBook-Pro.local" time="0.001">
+  <properties/>
+  <testcase name="likeUiCheck()" classname="SomeTest" time="0.001"/>
+  <system-out><![CDATA[Test UiCheck
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

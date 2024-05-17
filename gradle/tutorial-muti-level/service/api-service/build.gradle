@@ -1,0 +1,24 @@
+plugins {
+  id "myproject.java-conventions"
+}
+
+configurations {
+    // declare a configuration that is going to resolve the compile classpath of the application
+    compileClasspath.extendsFrom(someConfiguration)
+
+    // declare a configuration that is going to resolve the runtime classpath of the application
+    runtimeClasspath.extendsFrom(someConfiguration)
+}
+
+dependencies {
+  implementation  project(':shared')
+  someConfiguration  project(':app')
+  runtimeOnly('org.springframework:spring-core:5.3.32')
+  runtimeOnly group :"org.springframework", name: "spring-aop" ,version :"5.3.32"
+  runtimeOnly(group :"org.springframework", name: "spring-context" ,version :"5.3.32")
+  runtimeOnly(
+    [ group :"org.springframework", name: "spring-tx" ,version :"5.3.32" ]
+  )
+//  runtimeOnly files('libs/a.jar','libs/b.jar')
+//  runtimeOnly fileTree("libs") {include '*.jar'}
+}

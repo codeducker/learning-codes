@@ -1,0 +1,18 @@
+defaultTasks 'run'
+
+tasks.register('run') {
+    dependsOn gradle.includedBuild('my-app').task(':app:run')
+}
+
+task checkAll {
+    dependsOn gradle.includedBuild('my-app').task(':app:check')
+    dependsOn gradle.includedBuild('my-util').task(':number-util:check')
+    dependsOn gradle.includedBuild('my-util').task(':string-util:check')
+}
+
+tasks.register("myTask") {
+    dependsOn gradle.includedBuild('my-app').task(':app:myTask')
+}
+tasks.register("hello") {
+    dependsOn gradle.includedBuild('my-app').task(':app:hello')
+}

@@ -1,0 +1,2 @@
+rootProject.name='my-util'
+include "number-util","string-util"

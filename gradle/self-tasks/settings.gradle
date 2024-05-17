@@ -1,0 +1,22 @@
+
+pluginManagement {
+    repositories {
+        gradlePluginPortal()
+        google()
+    }
+}
+
+
+plugins {
+//    id("org.gradle.toolchains.fake") version('0.6.0')
+}
+
+dependencyResolutionManagement {
+    repositories {
+        mavenCentral()
+    }
+}
+
+rootProject.name="self-tasks"
+include "app"
+

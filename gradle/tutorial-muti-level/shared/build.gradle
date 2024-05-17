@@ -1,0 +1,8 @@
+plugins {
+  id "myproject.java-conventions"
+}
+
+dependencies {
+    testImplementation 'junit:junit:4.13'
+    testImpl 'org.apache.httpcomponents:httpclient:4.5.5'
+}

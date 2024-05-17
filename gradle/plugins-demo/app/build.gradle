@@ -1,0 +1,18 @@
+buildscript {
+    repositories {
+        gradlePluginPortal()
+    }
+    dependencies {
+        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.5'
+    }
+}
+
+plugins {
+    id("selfPlugin")
+    id("com.example.goodbye")
+}
+
+//apply from: project(':buildSrc').file('shared.gradle')
+
+println plugins
+apply plugin: 'com.jfrog.bintray'

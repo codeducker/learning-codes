@@ -1,0 +1,19 @@
+plugins {
+  id "java"
+}
+
+group="com.loern.mutiLevel"
+version="1.0"
+
+repositories {
+ mavenCentral()
+}
+
+dependencies {
+  testImplementation "junit:junit:4.13"
+}
+
+configurations {
+    testImpl.extendsFrom testImplementation
+    someConfiguration
+}

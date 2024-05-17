@@ -1,0 +1,60 @@
+plugins {
+    id 'application'
+}
+
+application {
+    mainClass = 'com.loern.composite.myApp.Main'
+}
+
+dependencies {
+    implementation 'com.loern.composite.myUtil:number-util:1.0'
+    implementation 'com.loern.composite.myUtil:string-util:1.0'
+}
+
+
+group 'com.loern.composite.myApp'
+version '1.0'
+
+repositories {
+    mavenCentral()
+}
+
+import javax.inject.Inject;
+abstract class CustomTask extends DefaultTask {
+    private final String message
+    private final int number
+
+    @Inject
+    CustomTask(String message, int number) {
+        this.message = message
+        this.number = number
+    }
+
+    @TaskAction
+    void run(){
+        println "${message} - ${number}"
+    }
+}
+
+def taskX = tasks.register('myTask', CustomTask, 'hello', 42 )
+
+//taskX.configure {
+//    dependsOn(provider {
+//        tasks.findAll { task -> task.name.startsWith('lib') }
+//    })
+//}
+
+def hello = tasks.register('hello') {
+    doLast {
+        println 'hello world'
+    }
+}
+
+hello.configure {
+    enabled = true//设置任务的启用或者禁用
+    //gradle hello -PskipHello 指定命令行参数跳过某个任务执行
+    def skipProvider = providers.gradleProperty("skipHello")
+    onlyIf("there is no property skipHello") {
+        !skipProvider.present
+    }
+}

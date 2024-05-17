@@ -1,0 +1,32 @@
+plugins {
+    id "application"
+}
+repositories {
+    mavenCentral()
+}
+dependencies {
+    testImplementation("org.junit.jupiter:junit-jupiter:5.9.3")
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+    implementation(project(":lib")) //添加lib项目依赖
+}
+testing {
+    suites {
+        // Configure the built-in test suite
+        test {
+            // Use JUnit4 test framework
+            useJUnit('4.13.2')
+        }
+    }
+}
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+}
+application {
+    // Define the main class for the application.
+    mainClass = 'com.loern.tutorialMuti.app.Main'
+}
+tasks.named("test"){
+    useJUnitPlatform()
+}

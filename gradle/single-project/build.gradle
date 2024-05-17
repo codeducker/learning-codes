@@ -1,0 +1,105 @@
+plugins {
+    id "application" //apply false
+}
+application {
+    mainClass = "com.loern.Main"
+}
+
+repositories {
+    mavenCentral()
+}
+dependencies {
+    implementation gradleApi()
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.1'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.6.1'
+}
+
+tasks.register('verifyUrl', VerifyUrl)
+
+tasks.named('wrapper') {
+    distributionType = Wrapper.DistributionType.ALL
+}
+
+//添加任务规则
+tasks.addRule("Pattern: ping<ID>") { String taskName ->
+
+    if (taskName.startsWith("ping")) {
+        task(taskName) {
+            doLast {
+                println "Pinging: " + (taskName - 'ping')
+            }
+        }
+    }
+}
+
+def taskX = tasks.register('taskX') {
+    doLast {
+        println 'taskX'
+        throw new RuntimeException()
+    }
+}
+def taskY = tasks.register('taskY') {
+    doLast {
+        println 'taskY'
+    }
+}
+
+def taskZ = tasks.register('taskZ') {
+    doLast {
+        println 'taskZ'
+    }
+}
+taskX.configure { finalizedBy taskY }//此时 即使taskX发生异常，仍会执行 taskY
+taskZ.configure {->dependsOn(taskX)}
+
+
+interface MessageExtension {
+    // A configurable greeting
+    Property<String> getGreeting()
+}
+
+abstract class GreetingTask extends DefaultTask {
+    // Configurable by the user
+    @Input
+    abstract Property<String> getGreeting();
+
+    // Read-only property calculated from the greeting
+    @Internal
+    final Provider<String> message = greeting.map { it + ' from Gradle' }
+
+    @TaskAction
+    void printMessage() {
+        logger.quiet(message.get())
+    }
+}
+
+// Some values to be configured later
+def b = 0
+def c = 0
+
+//tasks.register('genrate', Generator) {
+//    properties.put("a", 1)
+//    // Values have not been configured yet
+//    properties.put("b", providers.provider { b })
+//    properties.putAll(providers.provider { [c: c, d: c + 1] })
+//}
+
+objects.fileProperty()
+
+// Configure the values. There is no need to reconfigure the task
+b = 2
+c = 3
+
+project.extensions.create('messages', MessageExtension)
+
+tasks.register("greeting", GreetingTask) {
+    // Attach the greeting from the project extension
+    // Note that the values of the project extension have not been configured yet
+    greeting = messages.greeting
+}
+
+messages {
+    // Configure the greeting on the extension
+    // Note that there is no need to reconfigure the task's `greeting` property. This is automatically updated as the extension property changes
+    greeting = 'Hi'
+}

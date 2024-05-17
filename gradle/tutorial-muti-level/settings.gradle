@@ -1,0 +1,8 @@
+rootProject.name = "tutorial-muti-level"
+include "app", "service:api-service", "shared", "service:jasper-service", "service:file-dependencies", "js"
+
+//制定单独命名
+//include(':my-web-module')
+//project(':my-web-module').projectDir = "subs/web/my-web-module"
+
+enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")

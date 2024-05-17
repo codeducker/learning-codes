@@ -1,0 +1,6 @@
+import com.loern.tasks.Download
+
+tasks.register("download",Download.class){
+    fileText.set("")
+    fileText.convention("")
+}

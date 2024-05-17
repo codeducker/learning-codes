@@ -1,0 +1,58 @@
+import org.gradle.work.Incremental;
+import org.gradle.work.InputChanges;
+
+abstract class IncrementalReverseTask extends DefaultTask {
+    @Incremental
+    @PathSensitive(PathSensitivity.NAME_ONLY)
+    @InputDirectory
+    abstract DirectoryProperty getInputDir()
+
+    @OutputDirectory
+    abstract DirectoryProperty getOutputDir()
+
+    @Input
+    abstract Property<String> getInputProperty()
+
+    @TaskAction
+    void execute(InputChanges inputChanges) {
+        println(inputChanges.incremental
+                ? 'Executing incrementally'
+                : 'Executing non-incrementally'
+        )
+
+        inputChanges.getFileChanges(inputDir).each { change ->
+            if (change.fileType == FileType.DIRECTORY) return
+
+            println "${change.changeType}: ${change.normalizedPath}"
+            def targetFile = outputDir.file(change.normalizedPath).get().asFile
+            if (change.changeType == ChangeType.REMOVED) {
+                targetFile.delete()
+            } else {
+                targetFile.text = change.file.text.reverse()
+            }
+        }
+    }
+}
+tasks.register('incrementalReverse', IncrementalReverseTask) {
+    dependsOn('removeInput')
+    dependsOn("updateInputs")
+    inputDir = file('inputs')
+    outputDir = layout.buildDirectory.dir("outputs")
+    inputProperty = project.properties['taskInputProperty'] ?: 'original'
+}
+
+tasks.register('updateInputs') {
+    def inputsDir = layout.projectDirectory.dir('inputs')
+    println inputsDir
+    outputs.dir(inputsDir)
+    doLast {
+        inputsDir.file('1.txt').asFile.text = 'Changed content for existing file 1.'
+        inputsDir.file('4.txt').asFile.text = 'Content for new file 4.'
+    }
+}
+tasks.register('removeInput', Delete) {
+    delete 'inputs/1.txt'
+}
+tasks.register('removeOutput', Delete) {
+    delete layout.buildDirectory.file("outputs/1.txt")
+}

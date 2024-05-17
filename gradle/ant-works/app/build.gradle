@@ -1,0 +1,95 @@
+configurations {
+    pmd
+}
+
+dependencies {
+    pmd group: 'pmd', name: 'pmd', version: '4.2.5'
+}
+
+tasks.register('hello'){
+    doLast {
+        String greeting = 'hello from Ant'
+        ant.echo(message: greeting)
+    }
+}
+
+tasks.register('zip') {
+    doLast {
+        ant.zip(destfile: 'archive.zip') {
+            fileset(dir: 'src') {
+                include(name: '**.xml')
+                exclude(name: '**.java')
+            }
+        }
+    }
+}
+
+tasks.register('list') {
+    doLast {
+        def path = ant.path {
+            fileset(dir: 'libs', includes: '*.jar')
+        }
+        path.list().each {
+            println it
+        }
+    }
+}
+
+tasks.register('checkAntStyle') {
+    def checkstyleConfig = file('checkstyle.xml')
+    doLast {
+        ant.taskdef(resource: 'com/puppycrawl/tools/checkstyle/ant/checkstyle-ant-task.properties') {
+            classpath {
+                fileset(dir: 'libs', includes: '*.jar')
+            }
+        }
+        ant.checkstyle(config: checkstyleConfig) {
+            fileset(dir: 'src')
+        }
+    }
+}
+
+tasks.register('checkAnt') {
+    doLast {
+        ant.taskdef(name: 'pmd',
+                    classname: 'net.sourceforge.pmd.ant.PMDTask',
+                    classpath: configurations.pmd.asPath)
+        ant.pmd(shortFilenames: 'true',
+                failonruleviolation: 'true',
+                rulesetfiles: file('pmd-rules.xml').toURI().toString()) {
+            formatter(type: 'text', toConsole: 'true')
+            fileset(dir: 'src')
+        }
+    }
+}
+
+//ant.importBuild 'build.xml'
+
+ant.importBuild('build.xml') { antTargetName ->
+     antTargetName+"Xml"
+}
+
+helloXml {
+    doLast {
+        println 'Hello, from Gradle'
+    }
+}
+//设置ant属性
+ant.buildDir = buildDir
+ant.properties.buildDir = buildDir
+ant.properties['buildDir'] = buildDir
+ant.property(name: 'buildDir', location: buildDir)
+
+//获取ant属性
+println ant.antProp
+println ant.properties.antProp
+println ant.properties['antProp']
+
+//设置ant Reference
+ant.path(id: 'classpath', location: 'libs')
+ant.references.classpath = ant.path(location: 'libs')
+ant.references['classpath'] = ant.path(location: 'libs')
+
+//获取ant Reference
+println ant.references.antPath
+println ant.references['antPath']

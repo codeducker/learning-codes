@@ -1,0 +1,11 @@
+<project>
+    <!--<target name="helloXml" depends="hello">-->
+    <target name="hello">
+        <echo>Hello, from Ant</echo>
+    </target>
+    <property name="antProp" value="a property defined in an Ant build"/>
+    <path refid="classpath"/>
+    
+    <path id="antPath" location="libs"/>
+    
+</project>

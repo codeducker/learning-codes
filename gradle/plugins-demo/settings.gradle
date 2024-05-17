@@ -1,0 +1,26 @@
+pluginManagement {
+    plugins {
+        // id "" version "" //定义插件版本 这里可以读取 根目录下的gradle.properties中定义的变量参数
+    }
+    resolutionStrategy {
+        //添加解析策略
+//        eachPlugin {
+//            if (requested.id.namespace == 'com.example') {
+//                useModule('com.example:sample-plugins:1.0.0')
+//            }
+//        }
+    }
+    repositories {
+        //自定义插件仓库
+//        maven {
+//            url './maven-repo'
+//        }
+//        gradlePluginPortal()
+//        ivy {
+//            url './ivy-repo'
+//        }
+    }
+}
+
+rootProject.name="plugins-demo"
+include "app"

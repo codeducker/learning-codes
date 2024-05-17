@@ -1,0 +1,37 @@
+import org.gradle.api.*
+
+abstract class OtherTask extends DefaultTask {
+
+    @Input
+    abstract Property<String> fileText
+
+    @Input
+    public String fileName = "other.txt"
+
+    @OutputFile
+    public File otherFile = new File(fileName)
+
+    @TaskAction
+    public void run(){
+        otherFile.createNewFile()
+        otherFile.write(fileText.get())
+    }
+
+}
+
+
+class Other implements Plugin<Project> {
+    @Override
+    void apply(Project project) {
+        project.tasks.register("Other",OtherTask.class){
+            group = "com.loern.other"
+            description = "input file !"
+            fileText.set(
+                    "This is a new Other file"
+            )
+        }
+    }
+}
+
+
+apply plugin: Other

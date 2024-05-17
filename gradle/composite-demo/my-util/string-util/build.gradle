@@ -1,0 +1,15 @@
+plugins {
+    id 'java-library'
+}
+
+group 'com.loern.composite.myUtil'
+version '1.0'
+
+dependencies {
+    implementation 'org.apache.commons:commons-lang3:3.4'
+}
+
+
+repositories {
+    mavenCentral()
+}

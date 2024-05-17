@@ -1,0 +1,25 @@
+plugins {
+    id 'myproject.java-conventions'
+}
+dependencies {
+    implementation files(layout.buildDirectory.dir('classes')) {
+        builtBy 'compile'
+    }
+    implementation("org.ow2.asm:asm:7.1") {
+        because("we require jdk 9 byte generator")
+    }
+}
+
+tasks.register('compile') {
+    doLast {
+        println 'compile classes'
+    }
+}
+
+tasks.register('list') {
+    FileCollection compileCollection = configurations.compileClasspath
+    dependsOn compileCollection
+    doLast {
+        println "classpath = ${compileCollection.collect { File file -> file.name }}"
+    }
+}   
