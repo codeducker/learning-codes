@@ -197,7 +197,7 @@ func GetLimit() {
 }
 
 func main() {
-	XmlToExcel("已开发票增值税发票导出_20240506094042.xml", "/Users/loern/Desktop/")
+	XmlToExcel("已开发票增值税发票导出_20240521102351.xml", "/Users/loern/Desktop/")
 	// XmlToExcel("example.xml", "C:\\Users\\Administrator\\Desktop\\")
 	// GetLimit()
 }

@@ -27,3 +27,5 @@
 /c/cmake-build-debug
 /c/output
 /c/output/*
+/go/work
+/go/work/*
